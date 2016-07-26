@@ -4,7 +4,6 @@ import logging
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-import gensim
 from gensim import corpora, models, similarities
 import re
 import scraper
@@ -26,35 +25,21 @@ json_file.close()
 
 def lsirecommend(inputurl):
 
-    print('start' + str(datetime.datetime.now().time()))
-
     inputtext = scraper.scrapeurl( inputurl )
-
-    print('scraper done' + str(datetime.datetime.now().time()))
 
     vec_bow = dictionary.doc2bow(inputtext)
 
-    print('vec done' + str(datetime.datetime.now().time()))
-
     vec_lsi = lsi[vec_bow]
-
-    print('proj done' + str(datetime.datetime.now().time()))
 
     #index = similarities.MatrixSimilarity(lsi[corpus])
     sims = index[vec_lsi]
 
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
-    print('sims and sort complete' + str(datetime.datetime.now().time()))
-
     topresults = sims[:5]
-
-    print('sims and sort complete' + str(datetime.datetime.now().time()))
 
     #resultdata = [ ('Source' , scraper.scrapeurltitle(inputurl), inputurl, 'Source link' )]
     resultdata = []
-
-    print('result data initialized' + str(datetime.datetime.now().time()))
 
     for i in range(0,5):
         nowid = 'id'+ str(topresults[i][0])

@@ -5,8 +5,11 @@ import urllib
 import justext
 from gensim.parsing.preprocessing import STOPWORDS
 import re
+import datetime
 
 def scrapeurl(urlin):
+
+    print('start' + str(datetime.datetime.now().time()))
 
     req = urllib.request.Request(urlin, headers={'User-Agent': 'Mozilla/5.0'})
 
@@ -19,7 +22,11 @@ def scrapeurl(urlin):
         raise Exception('URL Error' + str(e.reason))
 
     else:
+        print('url good to go' + str(datetime.datetime.now().time()))
+
+
         page = urllib.request.urlopen(req).read()
+        print('read done' + str(datetime.datetime.now().time()))
 
         textout = ''
 
@@ -28,11 +35,18 @@ def scrapeurl(urlin):
             if not paragraph.is_boilerplate:
                 textout += ' ' + paragraph.text
 
+        print('justext done' + str(datetime.datetime.now().time()))
+
+
     lettersonly =  re.sub("[^a-zA-Z'\-]", " ", textout)
 
     words = lettersonly.lower().split()
 
+    print('re and lower split done' + str(datetime.datetime.now().time()))
+
     truetext = [w for w in words if not w in STOPWORDS]
+
+    print('stopwords done' + str(datetime.datetime.now().time()))
 
     return truetext
 
