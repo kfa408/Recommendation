@@ -8,18 +8,18 @@ import re
 
 def scrapeurl(urlin):
 
+    req = urllib.request.Request(urlin, headers={'User-Agent': 'Mozilla/5.0'})
+
     try:
-        urllib.request.urlopen(urlin)
+        urllib.request.urlopen(req)
     except urllib.error.HTTPError as e:
-        #raise Exception('HTTP Error ' + str(e.code))
-        print('http error')
-        return None
+        raise Exception('HTTP Error ' + str(e.code))
+
     except urllib.error.URLError as e:
-        #raise Exception('URL Error' + str(e.reason))
-        print('http error')
-        return None
+        raise Exception('URL Error' + str(e.reason))
+
     else:
-        page = urllib.request.urlopen(urlin).read()
+        page = urllib.request.urlopen(req).read()
 
         textout = ''
 
@@ -42,13 +42,11 @@ def scrapeurltitle(urlin):
     try:
         urllib.request.urlopen(urlin)
     except urllib.error.HTTPError as e:
-        #raise Exception('HTTP Error ' + str(e.code))
-        print('http error')
-        return None
+        raise Exception('HTTP Error ' + str(e.code))
+
     except urllib.error.URLError as e:
-        #raise Exception('URL Error' + str(e.reason))
-        print('http error')
-        return None
+        raise Exception('URL Error' + str(e.reason))
+
     else:
         page = urllib.request.urlopen(urlin).read()
         soup = BeautifulSoup(page, 'lxml')
